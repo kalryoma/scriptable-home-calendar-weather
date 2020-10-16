@@ -6,9 +6,7 @@ const isDark = hour <= 7 || hour >= 18;
 const TERMS = `${isDark ? "dark" : "nature"}`;
 
 let widget = new ListWidget();
-widget.url = `x-fantastical3://x-callback-url/show?date=${date
-  .getFullYear()
-  .toString()}-${(
+widget.url = `x-fantastical3://x-callback-url/show?date=${date.getFullYear().toString()}-${(
   date.getMonth() + 1
 ).toString()}-${date.getDate().toString()}`;
 
@@ -20,11 +18,7 @@ const batteryLevel = Device.batteryLevel() * 100;
 const batteryTxt = battery.addText(`🔋${Math.round(batteryLevel)}%`);
 batteryTxt.font = Font.semiboldRoundedSystemFont(16);
 batteryTxt.textColor =
-  batteryLevel >= 50
-    ? new Color("#34c579")
-    : batteryLevel > 20
-    ? new Color("#ffcc00")
-    : new Color("#ff3b30");
+  batteryLevel >= 50 ? new Color("#34c579") : batteryLevel > 20 ? new Color("#ffcc00") : new Color("#ff3b30");
 widget.addSpacer(0.5);
 
 let df = new DateFormatter();
@@ -32,9 +26,7 @@ df.dateFormat = "EEEE";
 let dayOfWeek = day.addText(df.string(date).toUpperCase());
 const secondLine = widget.addStack();
 secondLine.setPadding(8, 0, 0, 0);
-let dateNumber = secondLine.addText(
-  `${(date.getMonth() + 1).toString()}月${date.getDate().toString()}日`
-);
+let dateNumber = secondLine.addText(`${(date.getMonth() + 1).toString()}月${date.getDate().toString()}日`);
 dayOfWeek.font = Font.semiboldRoundedSystemFont(16);
 dateNumber.font = Font.regularRoundedSystemFont(30);
 
@@ -52,7 +44,7 @@ CalendarEvent.today().then((events) => {
     indicator.font = Font.semiboldRoundedSystemFont(14);
     indicator.textColor = event.calendar.color;
     const title = eventStack.addText(event.title);
-    title.font = Font.lightRoundedSystemFont(14);
+    title.font = Font.regularRoundedSystemFont(14);
     title.textColor = Color.white();
   });
 });
@@ -62,15 +54,9 @@ const path = files.joinPath(files.documentsDirectory(), "TodayView.jpg");
 const modificationDate = files.modificationDate(path);
 
 // Download image if it doesn't exist, wasn't created today, or update is forced
-if (
-  !modificationDate ||
-  !sameDay(modificationDate, date) ||
-  FORCE_IMAGE_UPDATE
-) {
+if (!modificationDate || !sameDay(modificationDate, date) || FORCE_IMAGE_UPDATE) {
   try {
-    let img = await downloadImage(
-      "https://source.unsplash.com/featured/500x500/?" + TERMS
-    );
+    let img = await downloadImage("https://source.unsplash.com/featured/500x500/?" + TERMS);
     files.writeImage(path, img);
     widget.backgroundImage = img;
   } catch {
@@ -98,9 +84,5 @@ async function downloadImage(url) {
 
 // Determines if two dates occur on the same day
 function sameDay(d1, d2) {
-  return (
-    d1.getFullYear() === d2.getFullYear() &&
-    d1.getMonth() === d2.getMonth() &&
-    d1.getDate() === d2.getDate()
-  );
+  return d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() && d1.getDate() === d2.getDate();
 }
